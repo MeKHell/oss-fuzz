@@ -109,6 +109,11 @@ ENV FUZZER_LDFLAGS ""
 
 WORKDIR $SRC
 
+RUN git clone --depth 1 https://github.com/catenacyber/nallocfuzz.git
+RUN git clone --depth 1 https://github.com/ianlancetaylor/libbacktrace.git $SRC/nallocfuzz/libbacktrace
+COPY precompile_nallocfuzz /usr/local/bin/
+RUN precompile_nallocfuzz
+
 RUN git clone https://github.com/AFLplusplus/AFLplusplus.git aflplusplus && \
     cd aflplusplus && \
     git checkout 091d66fa92cd9e4caa5829d579b1b996c49db8c9 && \
@@ -154,6 +159,7 @@ COPY bazel_build_fuzz_tests \
     compile_javascript_fuzzer \
     compile_libfuzzer \
     compile_native_go_fuzzer \
+    compile_nallocfuzz \
     compile_python_fuzzer \
     debug_afl \
     # Go, JavaScript, Java, Python, Rust, and Swift installation scripts.
